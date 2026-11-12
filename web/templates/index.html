@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>808 VAULT // DAW MIXER & MASTERING SUITE</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="daw-container">
+    <!-- Top DAW Transport & Header -->
+    <header class="daw-header">
+      <div class="logo-area">
+        <span class="vault-badge">VAULT-OS v4.2</span>
+        <h1 class="logo-title">808 VAULT <span>// SOUND LAB</span></h1>
+      </div>
+
+      <div class="transport-bar">
+        <button id="btn-play" class="transport-btn play-btn">▶ PLAY</button>
+        <button id="btn-stop" class="transport-btn stop-btn">■ STOP</button>
+        <div class="tempo-display">
+          <span class="label">BPM</span>
+          <span id="bpm-val" class="val">140.0</span>
+        </div>
+        <div class="timecode-display">
+          <span class="label">TIME</span>
+          <span id="timecode-val" class="val">00:00:00</span>
+        </div>
+      </div>
+
+      <!-- Synchronized Gapless A/B Mode Toggle -->
+      <div class="ab-switch-container">
+        <span class="ab-label">MONITORING:</span>
+        <div class="ab-toggle-group">
+          <button id="btn-mode-raw" class="ab-btn">RAW DEMO (UNMIXED)</button>
+          <button id="btn-mode-master" class="ab-btn active">MASTERED TRACK (+4dB)</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Visualizer & Waveform Section -->
+    <section class="waveform-section">
+      <div class="waveform-header">
+        <div class="current-track-info">
+          <span class="now-playing-tag">NOW PLAYING:</span>
+          <h2 id="current-track-title">Sub Zero 808 (D Minor // 140 BPM)</h2>
+        </div>
+        <div class="dsp-badges">
+          <span class="dsp-chip" id="dsp-status">DSP: 32-BIT FLOAT 48kHz</span>
+          <span class="dsp-chip status-active" id="active-mode-badge">MODE: MASTERED HIGH-GLOSS</span>
+        </div>
+      </div>
+
+      <div class="canvas-wrapper">
+        <canvas id="waveform-canvas" width="1200" height="130"></canvas>
+        <div id="playhead" class="playhead-line"></div>
+      </div>
+      <div class="timeline-ticks">
+        <span>0:00</span>
+        <span>0:15</span>
+        <span>0:30</span>
+        <span>0:45</span>
+        <span>1:00</span>
+        <span>1:15</span>
+        <span>1:30</span>
+      </div>
+    </section>
+
+    <!-- DAW Channel Strips Mixer -->
+    <section class="daw-mixer-section">
+      <div class="section-title-bar">
+        <h3>STUDIO CONSOLE // 6-CHANNEL ANALOG HYBRID MIXER</h3>
+        <span class="console-serial">SSL-9000J EMULATION BUS</span>
+      </div>
+
+      <div class="mixer-channels" id="mixer-channels">
+        <!-- Channel 1: 808 Bass -->
+        <div class="channel-strip" data-channel="0">
+          <div class="strip-header">CH 01</div>
+          <div class="knob-group">
+            <label>PAN</label>
+            <input type="range" class="knob-pan" min="-50" max="50" value="0">
+            <span class="knob-val">C</span>
+          </div>
+          <div class="meter-fader-row">
+            <div class="vu-meter-column">
+              <div class="vu-led red"></div>
+              <div class="vu-led amber"></div>
+              <div class="vu-led amber"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+            </div>
+            <div class="fader-wrapper">
+              <input type="range" class="fader" orient="vertical" min="0" max="100" value="85">
+            </div>
+          </div>
+          <div class="btn-group-ms">
+            <button class="btn-mute">M</button>
+            <button class="btn-solo">S</button>
+          </div>
+          <div class="channel-label">808 SUB</div>
+        </div>
+
+        <!-- Channel 2: Kick -->
+        <div class="channel-strip" data-channel="1">
+          <div class="strip-header">CH 02</div>
+          <div class="knob-group">
+            <label>PAN</label>
+            <input type="range" class="knob-pan" min="-50" max="50" value="0">
+            <span class="knob-val">C</span>
+          </div>
+          <div class="meter-fader-row">
+            <div class="vu-meter-column">
+              <div class="vu-led red"></div>
+              <div class="vu-led amber"></div>
+              <div class="vu-led amber"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+            </div>
+            <div class="fader-wrapper">
+              <input type="range" class="fader" orient="vertical" min="0" max="100" value="88">
+            </div>
+          </div>
+          <div class="btn-group-ms">
+            <button class="btn-mute">M</button>
+            <button class="btn-solo">S</button>
+          </div>
+          <div class="channel-label">KICK</div>
+        </div>
+
+        <!-- Channel 3: Snare / Clap -->
+        <div class="channel-strip" data-channel="2">
+          <div class="strip-header">CH 03</div>
+          <div class="knob-group">
+            <label>PAN</label>
+            <input type="range" class="knob-pan" min="-50" max="50" value="-5">
+            <span class="knob-val">5L</span>
+          </div>
+          <div class="meter-fader-row">
+            <div class="vu-meter-column">
+              <div class="vu-led red"></div>
+              <div class="vu-led amber"></div>
+              <div class="vu-led amber"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+            </div>
+            <div class="fader-wrapper">
+              <input type="range" class="fader" orient="vertical" min="0" max="100" value="78">
+            </div>
+          </div>
+          <div class="btn-group-ms">
+            <button class="btn-mute">M</button>
+            <button class="btn-solo">S</button>
+          </div>
+          <div class="channel-label">SNARE</div>
+        </div>
+
+        <!-- Channel 4: Hi-Hats -->
+        <div class="channel-strip" data-channel="3">
+          <div class="strip-header">CH 04</div>
+          <div class="knob-group">
+            <label>PAN</label>
+            <input type="range" class="knob-pan" min="-50" max="50" value="12">
+            <span class="knob-val">12R</span>
+          </div>
+          <div class="meter-fader-row">
+            <div class="vu-meter-column">
+              <div class="vu-led red"></div>
+              <div class="vu-led amber"></div>
+              <div class="vu-led amber"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+            </div>
+            <div class="fader-wrapper">
+              <input type="range" class="fader" orient="vertical" min="0" max="100" value="72">
+            </div>
+          </div>
+          <div class="btn-group-ms">
+            <button class="btn-mute">M</button>
+            <button class="btn-solo">S</button>
+          </div>
+          <div class="channel-label">HI-HATS</div>
+        </div>
+
+        <!-- Channel 5: Synth / Lead -->
+        <div class="channel-strip" data-channel="4">
+          <div class="strip-header">CH 05</div>
+          <div class="knob-group">
+            <label>PAN</label>
+            <input type="range" class="knob-pan" min="-50" max="50" value="-15">
+            <span class="knob-val">15L</span>
+          </div>
+          <div class="meter-fader-row">
+            <div class="vu-meter-column">
+              <div class="vu-led red"></div>
+              <div class="vu-led amber"></div>
+              <div class="vu-led amber"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+            </div>
+            <div class="fader-wrapper">
+              <input type="range" class="fader" orient="vertical" min="0" max="100" value="82">
+            </div>
+          </div>
+          <div class="btn-group-ms">
+            <button class="btn-mute">M</button>
+            <button class="btn-solo">S</button>
+          </div>
+          <div class="channel-label">SYNTH</div>
+        </div>
+
+        <!-- Channel 6: Master Bus -->
+        <div class="channel-strip master-channel" data-channel="5">
+          <div class="strip-header">MASTER</div>
+          <div class="knob-group">
+            <label>LIMITER</label>
+            <input type="range" class="knob-pan" min="0" max="10" value="6">
+            <span class="knob-val">+4dB</span>
+          </div>
+          <div class="meter-fader-row">
+            <div class="vu-meter-column double-vu">
+              <div class="vu-led red"></div>
+              <div class="vu-led amber"></div>
+              <div class="vu-led amber"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+              <div class="vu-led green"></div>
+            </div>
+            <div class="fader-wrapper">
+              <input type="range" class="fader master-fader" orient="vertical" min="0" max="100" value="90">
+            </div>
+          </div>
+          <div class="btn-group-ms">
+            <button class="btn-mute">M</button>
+            <button class="btn-solo active-dim">DIM</button>
+          </div>
+          <div class="channel-label">MAIN OUT</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Showcase Tabs: Beat Catalog / Licenses / Studio Booking -->
+    <div class="content-grid">
+      <!-- Tracks Catalog -->
+      <section class="card-box">
+        <div class="box-header">
+          <h3>⚡ RECENT BEAT CATALOG</h3>
+          <span class="sub-text">DIRECT FROM PRODUCER</span>
+        </div>
+        <div class="track-list" id="track-list">
+          <!-- Dynamically populated or static baseline -->
+        </div>
+      </section>
+
+      <!-- License Selector -->
+      <section class="card-box">
+        <div class="box-header">
+          <h3>📜 LICENSE TIERS & RIGHTS</h3>
+          <span class="sub-text">CLEAR COMMERCIAL CLEARANCE</span>
+        </div>
+        <div class="license-grid" id="license-grid">
+          <!-- Dynamically rendered -->
+        </div>
+      </section>
+
+      <!-- Studio Booking Form -->
+      <section class="card-box full-width">
+        <div class="box-header">
+          <h3>🎙 BOOK STUDIO SESSION // CONTROL ROOM & VOCAL BOOTH</h3>
+          <span class="sub-text">MOSCOW / HYBRID MONITORING SUITE</span>
+        </div>
+        <form id="booking-form" class="studio-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>YOUR NAME / ALIAS:</label>
+              <input type="text" id="bk-name" placeholder="e.g. Travis / Yung Producer" required>
+            </div>
+            <div class="form-group">
+              <label>CONTACT (TELEGRAM OR PHONE):</label>
+              <input type="text" id="bk-contact" placeholder="@username or +7 (999) 000-00-00" required>
+            </div>
+            <div class="form-group">
+              <label>STUDIO ROOM:</label>
+              <select id="bk-room">
+                <option value="Vocal Booth (Neumann U87 + Avalon 737)">Vocal Booth (Neumann U87 + Avalon)</option>
+                <option value="Main Control Room (Barefoot MM27 Monitoring)">Main Control Room (Barefoot MM27)</option>
+                <option value="Dolby Atmos 7.1.4 Mixing Suite">Dolby Atmos 7.1.4 Suite</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>SESSION DATE:</label>
+              <input type="date" id="bk-date" required>
+            </div>
+            <div class="form-group">
+              <label>TIME SLOT:</label>
+              <select id="bk-time">
+                <option value="12:00 - 15:00 (Day Session)">12:00 - 15:00 (Day Session, 3h)</option>
+                <option value="15:30 - 19:30 (Prime Trackout)">15:30 - 19:30 (Prime Session, 4h)</option>
+                <option value="20:00 - 02:00 (All-Night Lock-in)">20:00 - 02:00 (Night Lock-in, 6h)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>SPECIAL REQUIREMENTS / STEMS:</label>
+              <input type="text" id="bk-notes" placeholder="Autotune hardware, analog summing, engineer needed...">
+            </div>
+          </div>
+          <button type="submit" class="submit-booking-btn">CONFIRM STUDIO BOOKING ➔</button>
+          <div id="booking-alert" class="booking-alert hidden"></div>
+        </form>
+      </section>
+    </div>
+  </div>
+
+  <!-- Modal for Ordering License -->
+  <div id="order-modal" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-license-title">PURCHASE LICENSE</h3>
+        <button id="modal-close-btn" class="close-btn">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-summary" id="modal-summary-text">Select beat and licensing details below:</p>
+        <form id="license-order-form">
+          <input type="hidden" id="order-track-id">
+          <input type="hidden" id="order-license-type">
+          <div class="form-group">
+            <label>YOUR NAME / PRODUCER ALIAS:</label>
+            <input type="text" id="ord-name" required placeholder="Alias or Legal Name">
+          </div>
+          <div class="form-group">
+            <label>TELEGRAM OR EMAIL:</label>
+            <input type="text" id="ord-contact" required placeholder="@handle or artist@gmail.com">
+          </div>
+          <div class="form-group">
+            <label>ARTIST PSEUDONYM (FOR CONTRACT):</label>
+            <input type="text" id="ord-pseudonym" placeholder="e.g. DJ PHANTOM">
+          </div>
+          <div class="price-display-box">
+            <span>TOTAL DUE:</span>
+            <span id="order-total-price" class="glow-price">0 ₽</span>
+          </div>
+          <button type="submit" class="order-submit-btn">PROCEED TO CONTRACT & SECURE CHECKOUT ➔</button>
+          <div id="order-alert" class="booking-alert hidden"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
